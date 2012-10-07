@@ -1,4 +1,11 @@
 function createChart(div_id, line1_data, line2_data) {
+  /*
+  */
+  console.log('CHARTS');
+  console.log(div_id);
+  console.log(line1_data);
+  console.log(line2_data);
+  console.log('END CHARTS');
     var chart;
     $(document).ready(function() {
 			chart = new Highcharts.Chart({
@@ -67,13 +74,13 @@ function createChart(div_id, line1_data, line2_data) {
                     }
                 }
             },
-    
+
             series: [{
                 //type: 'area',
                 name: 'Contribution Amount',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
-                
+
                 pointStart: Date.UTC(2010, 03, 01),
                 data: line1_data
                 //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),50000]]
@@ -84,13 +91,13 @@ function createChart(div_id, line1_data, line2_data) {
                 name: 'Mention Frequency Index',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
-                
+
                 pointStart: Date.UTC(2010, 03, 01),
                 //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),60000]]
                 data: line2_data
 
-            }] 
+            }]
         });
     });
-    
+
 }

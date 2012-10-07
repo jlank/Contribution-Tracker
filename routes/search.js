@@ -59,16 +59,16 @@ if (o.hits && o.hits.total > 0) {
   o.hits.hits.forEach(function (resu) {
     resp.push({ speaker: resu._source.speaker, calais: resu._source.calais, date: resu._source.date});
     //console.log(resp);
+  });
     if (!req.query.callback) {
       res.send(resp);
     }
     else {
       res.send(req.query.callback + '(' + JSON.stringify(resp) + ')');
     }
-  });
 }
 else {
-  res.send({ "err": "no results"});
+  res.send(req.query.callback + '(' + JSON.stringify({ "err": "no results"}) + ')');
 }
 
 
