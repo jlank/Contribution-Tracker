@@ -4,30 +4,21 @@ var ElasticSearchClient = require('elasticsearchclient'),
 
 var apiKey = 'd7629613d1f41332b037a66125bdbbf0';
 
-  var qryObj = {
-    "query":{
-      "term": { "speaker":"romney" }
-      //"facets" : { "tags" : { "terms" : {"organizations" : "Koch", "persons": "Koch"} } }
-    }
-  };
-
-// search index
-/*
   request.get({uri: 'http://api.searchbox.io/api-key/'+apiKey+
-    '/wapohack/docs/_search?q=speaker:obama'}, function (err, r, b) {
-*/
-  request.get({uri: 'http://api.searchbox.io/api-key/'+apiKey+
-    '/wapohack/docs/_search', qs: qryObj}, function (err, r, b) {
+    '/wapohack/docs/_search?size=100&q=calas.organizations:Soros OR calais.persons:Soros AND speaker:romney'}, function (err, r, b) {
   if (err) {
     console.log(err);
   }
 
-  //console.log(JSON.parse(JSON.stringify(b,null,2)));
   var o = JSON.parse(b);
-  //console.log(JSON.stringify(o.hits.hits[0]._source,null,4));
-  console.log(o.hits.hits[0]._source.speaker);
-  console.log(o.hits.hits[0]._source.date);
-  console.log(JSON.stringify(o.hits.hits[0]._source.calais, null, 4));
+if (o.hits) {
+  o.hits.hits.forEach(function (res) {
+    console.log({ speaker: res._source.speaker, calais: res._source.calais, date: res._source.date});
+  });
+}
+else {
+  console.log({ "err": "no results"});
+}
 
 
 });

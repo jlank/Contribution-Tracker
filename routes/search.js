@@ -31,3 +31,54 @@ exports.search = function (req, res) {
   });
   }
 };
+
+exports.search2 = function (req, res) {
+
+var  request = require('request'),
+  url = require('url');
+
+var query = req.query.query;
+var candidate = req.query.candidate;
+//console.log(query);
+//console.log(candidate);
+
+var apiKey = 'd7629613d1f41332b037a66125bdbbf0';
+
+var stri = 'http://api.searchbox.io/api-key/'+apiKey+ '/wapohack/docs/_search?size=100&q=calas.organizations:'+query+' OR calais.persons:'+query+' AND speaker:' + candidate;
+
+
+  request.get({uri: stri, timeout: 2000}, function (err, r, b) {
+  if (err) {
+    console.log(err);
+  }
+
+  var o = JSON.parse(b);
+  var resp = []
+  console.log(o.hits.total);
+if (o.hits && o.hits.total > 0) {
+  o.hits.hits.forEach(function (resu) {
+    resp.push({ speaker: resu._source.speaker, calais: resu._source.calais, date: resu._source.date});
+    //console.log(resp);
+    if (!req.query.callback) {
+      res.send(resp);
+    }
+    else {
+      res.send(req.query.callback + '(' + JSON.stringify(resp) + ')');
+    }
+  });
+}
+else {
+  res.send({ "err": "no results"});
+}
+
+
+});
+
+
+
+
+
+
+
+
+}

@@ -28,7 +28,7 @@ var sample = { "name":"First" };
 var docs = require('./allWapoHackDocs');
 
 docs.rows.forEach(function (item) {
-request.get('https://jlank.iriscouch.com/wapohack/item.id', function (err, re, body) {
+request.get('https://jlank.iriscouch.com/wapohack/' + item.id, function (err, re, body) {
   body = JSON.parse(body);
   delete body.id;
   delete body._id;
