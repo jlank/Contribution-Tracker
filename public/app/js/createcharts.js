@@ -1,5 +1,6 @@
-function createChart(data_unique, div_id) {
+function createChart(div_id, line1_data, line2_data) {
     var chart;
+    console.log(line2_data);
     $(document).ready(function() {
 			chart = new Highcharts.Chart({
             chart: {
@@ -75,7 +76,9 @@ function createChart(data_unique, div_id) {
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
                 
                 pointStart: Date.UTC(2010, 03, 01),
-                data: data_unique
+                data: line1_data
+                //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),50000]]
+
             },
            {
                 //type: 'area',
@@ -84,7 +87,9 @@ function createChart(data_unique, div_id) {
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
                 
                 pointStart: Date.UTC(2010, 03, 01),
-                data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),50000]]
+                //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),60000]]
+                data: line2_data
+
             }] 
         });
     });
