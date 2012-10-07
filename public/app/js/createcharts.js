@@ -1,16 +1,18 @@
-function createChart(data_unique) {
+function createChart(data_unique, div_id) {
     var chart;
     $(document).ready(function() {
-			
-			
 			chart = new Highcharts.Chart({
             chart: {
-                renderTo: 'container',
+                renderTo: div_id,
                 zoomType: 'x',
-                spacingRight: 20
+                spacingRight: 20,
+                width: 400,
+                //type: 'spline'
+
+
             },
             title: {
-                text: 'Campaign Finance From x to the present'
+                text: 'Campaign Finance For ' + div_id
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -67,7 +69,7 @@ function createChart(data_unique) {
             },
     
             series: [{
-                type: 'area',
+                //type: 'area',
                 name: 'USD to EUR',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
@@ -75,6 +77,15 @@ function createChart(data_unique) {
                 pointStart: Date.UTC(2010, 03, 01),
                 data: data_unique
             }]
+     /*       series: [{
+                //type: 'area',
+                name: 'Test Name',
+                //pointInterval: 24 * 3600 * 1000, // by day
+                //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
+                
+                pointStart: Date.UTC(2010, 03, 01),
+                data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),50000]]
+            }] */
         });
     });
     
