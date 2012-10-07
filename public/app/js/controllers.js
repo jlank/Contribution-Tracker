@@ -22,10 +22,13 @@ var mention_data = [];
 				var ddm = parseInt(item.key[3]);
 				var ddd = parseInt(item.key[4]);
 				var dda_int = [ddy,ddm,ddd];
+				//console.log(Date.UTC(ddy,ddm,ddd-1))
 				mention_data.push([Date.UTC(ddy,ddm,ddd),10000]);
+				mention_data.push([Date.UTC(ddy,ddm,ddd-1),0]);
+
 			});
 			//console.log("first mention" + mention_data);
-			      //  console.log(mention_data);
+			       //console.log(mention_data);
 					createChart(candidate, test_data, mention_data);
 
 					//createChart(candidate, mention_data);

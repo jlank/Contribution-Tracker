@@ -30,5 +30,33 @@
 }
 
 #Obama, #Romney {
- float: left;
+  float: left;
  }
+
+#btnfix {
+position: relative;
+top: -4.3px;
+}
+
+#navbarid{
+color:white;
+padding-left:5px;
+padding-bottom:5px;
+background-color:black;
+margin-bottom:10px;
+}
+
+#ngviewid {
+padding-left:10px;
+}
+
+#description{
+padding-left: 10px;
+padding-bottom: 10px;
+padding-top: 10px;
+padding-right: 10px;
+margin-left: 10px;
+margin-right: 20px;
+margin-bottom: 10px;
+font-size: 16px;
+}
