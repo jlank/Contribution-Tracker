@@ -1,29 +1,40 @@
 var ElasticSearchClient = require('elasticsearchclient'),
-        url = require('url');
+  request = require('request'),
+  url = require('url');
 
 var apiKey = 'd7629613d1f41332b037a66125bdbbf0';
-var connectionString = url.parse('http://api.searchbox.io/api-key/'+apiKey+'/');
-
-var serverOptions = {
-   host:connectionString.hostname,
-   path:connectionString.pathname
-};
-
-var elasticSearchClient = new ElasticSearchClient(serverOptions);
 
   var qryObj = {
     "query":{
-      "query_string":{
-          "query":"Reliability"
-        }
+      "term": { "speaker":"romney" }
+      //"facets" : { "tags" : { "terms" : {"organizations" : "Koch", "persons": "Koch"} } }
     }
   };
 
-elasticSearchClient.search('wapohack', 'transcripts', qryObj)
-    .on('data', function (data) {
-      console.log(data)
-    }).on('error', function (error) {
-      console.log(error)
-    })
-    .exec()
-    //console.log(elasticSearchClient);
+// search index
+/*
+  request.get({uri: 'http://api.searchbox.io/api-key/'+apiKey+
+    '/wapohack/docs/_search?q=speaker:obama'}, function (err, r, b) {
+*/
+  request.get({uri: 'http://api.searchbox.io/api-key/'+apiKey+
+    '/wapohack/docs/_search', qs: qryObj}, function (err, r, b) {
+  if (err) {
+    console.log(err);
+  }
+
+  //console.log(JSON.parse(JSON.stringify(b,null,2)));
+  var o = JSON.parse(b);
+  //console.log(JSON.stringify(o.hits.hits[0]._source,null,4));
+  console.log(o.hits.hits[0]._source.speaker);
+  console.log(o.hits.hits[0]._source.date);
+  console.log(JSON.stringify(o.hits.hits[0]._source.calais, null, 4));
+
+
+});
+
+
+
+
+
+
+
