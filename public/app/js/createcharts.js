@@ -76,8 +76,8 @@ function createChart(data_unique, div_id) {
                 
                 pointStart: Date.UTC(2010, 03, 01),
                 data: data_unique
-            }]
-     /*       series: [{
+            },
+           {
                 //type: 'area',
                 name: 'Test Name',
                 //pointInterval: 24 * 3600 * 1000, // by day
@@ -85,7 +85,7 @@ function createChart(data_unique, div_id) {
                 
                 pointStart: Date.UTC(2010, 03, 01),
                 data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),50000]]
-            }] */
+            }] 
         });
     });
     
