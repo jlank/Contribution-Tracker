@@ -9,21 +9,35 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
 
   if ($routeParams.query) {
      $scope.query = $routeParams.query;
-     $http.jsonp('http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=Obama&contributor_ft=' +
+     $http.jsonp('http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=Obama&cycle=2008|2010|2012&contributor_ft=' +
           $routeParams.query + '&callback=JSON_CALLBACK')
         .success(function (data) {
           //console.log(data[0].amount);
-          console.log(data);
+          //console.log(data);
           data.forEach(function(item){
-          	test_data.push(parseInt(item.amount));	// this is the functional line
+          	//test_data.push(parseInt(item.amount));	// this is the functional line
           	//test_data.push(parseInt(item.amount)+160); // this is for the cycle 2010 param
+          	
+          	var amount = (parseInt(item.amount));
+          	var dda = item.date.split('-'); // dda = date_detail_array
+          	var ddy = parseInt(dda[0]); //date detail year
+          	var ddm = parseInt(dda[1]);
+          	var ddd = parseInt(dda[2]);
+          	var dda_int = [ddy,ddm,ddd];
+          	console.log(ddy,ddm,ddd);
+          	if(amount > 0){
+          		test_data.push([Date.UTC(ddy,ddm,ddd),amount]);
+          	}
+          	//data_date.push(dda_int);
+          	//[[[2012,02,02],1000],[[2012,02,03],2000]]
           });
 		  console.log(test_data);
-          $scope.results = data;
+		  //console.log(test_data);
+          //$scope.results = data;
           //$scope.data = [];
          // $scope.data[0] = data[0].amount;
          // $scope.data[1] = data[1].amount;
-          console.log($scope.data);
+          //console.log($scope.data);
         	createChart(test_data);
 
         });

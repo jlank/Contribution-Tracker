@@ -19,7 +19,7 @@ function createChart(data_unique) {
             },
             xAxis: {
                 type: 'datetime',
-                maxZoom: 14 * 24 * 3600000, // fourteen days
+                //maxZoom: 14 * 24 * 3600000, // fourteen days
                 title: {
                     text: null
                 }
@@ -69,7 +69,7 @@ function createChart(data_unique) {
             series: [{
                 type: 'area',
                 name: 'USD to EUR',
-                pointInterval: 24 * 3600 * 1000, // by day
+                //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
                 
                 pointStart: Date.UTC(2010, 03, 01),
