@@ -2,7 +2,7 @@
   <form>
     <div class="input-append">
       <input class="span6" id="appendedInputButtons" value="{{query}}" ng-model="query" size="16" type="text"/>
-      <button class="btn btn-success" ng-click="SearchGsa()">Search</button>
+      <button id="btnfix" class="btn btn-success" ng-click="SearchGsa()">Search</button>
     </div>
   </form>
   <div class="row-fluid">
@@ -13,10 +13,7 @@
         <h5 ng-bind-html="item.amount"></h5> -->
         <!--<p ng-bind-html="item.description"></p> -->
         </div>
-      <script type="text/javascript">
-      	//alert({{data}});
-  		// createChart({{data}});
- 	 </script>
+    
       </div>
     </div>
   </div>

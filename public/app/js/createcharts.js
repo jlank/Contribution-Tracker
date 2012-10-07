@@ -1,19 +1,18 @@
 function createChart(div_id, line1_data, line2_data) {
     var chart;
-    console.log(line2_data);
     $(document).ready(function() {
 			chart = new Highcharts.Chart({
             chart: {
                 renderTo: div_id,
                 zoomType: 'x',
                 spacingRight: 20,
-                width: 400,
+                width: 500,
                 //type: 'spline'
 
 
             },
             title: {
-                text: 'Campaign Finance For ' + div_id
+                text: div_id
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -24,12 +23,12 @@ function createChart(div_id, line1_data, line2_data) {
                 type: 'datetime',
                 //maxZoom: 14 * 24 * 3600000, // fourteen days
                 title: {
-                    text: null
+                    text: 'Date'
                 }
             },
             yAxis: {
                 title: {
-                    text: 'Exchange rate'
+                    text: 'Contribution (Blue) / Mention Frequency Index'
                 },
                 min: 0,
                 startOnTick: false,
@@ -71,7 +70,7 @@ function createChart(div_id, line1_data, line2_data) {
     
             series: [{
                 //type: 'area',
-                name: 'USD to EUR',
+                name: 'Contribution Amount',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
                 
@@ -82,7 +81,7 @@ function createChart(div_id, line1_data, line2_data) {
             },
            {
                 //type: 'area',
-                name: 'Test Name',
+                name: 'Mention Frequency Index',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
                 
