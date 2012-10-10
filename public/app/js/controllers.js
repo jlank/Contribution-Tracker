@@ -17,6 +17,7 @@ var cd = [];
 
 if ($routeParams.query) {
 	var run = function (candidate) {
+   charts[candidate] = {};
    $scope.query = $routeParams.query;
    var host = 'jlank.wapohack.jit.su';
    //host = 'localhost:3000';
@@ -29,29 +30,29 @@ if ($routeParams.query) {
             var ddy = parseInt(item.date[0]); //date detail year
             var ddm = parseInt(item.date[1]);
             var ddd = parseInt(item.date[2]);
-            //var dda_int = [ddy,ddm,ddd];
-            //mention_data.push([Date.UTC(ddy,ddm,ddd),10000]);
-            mention_data[candidate.toLowerCase()] = md.push([Date.UTC(ddy,ddm,ddd),10000]);
+            md.push([Date.UTC(ddy,ddm,ddd),10000]);
+
           });
 
+          charts[candidate]['md'] = md
           charts['candidate'] = candidate;
-          charts['mention_data'] = mention_data[candidate.toLowerCase()].md;
-          if (!created) {
-            console.log('creating mention charts');
-            //createChart(charts.candidate, charts.contribution_data, charts.mention_data);
-            createChart(charts.candidate, cd, md);
-            created = true;
-          }
-          else {
-            console.log('no data for mentions for: ' + $routeParams.query + ' & ' + candidate);
-          }
-        }
+          console.log('creating mention charts');
+          createChart(charts.candidate, charts[candidate].cd, charts[candidate].md);
 
+          //charts['candidate'] = candidate;
+          //console.log('creating mention charts');
+          //createChart(charts.candidate, cd, md);
+        }
+          md = [];
+          cd = [];
+
+          /*
         contribution_data = [];
         data_date = [];
         dedupe = {};
         sorted_keys = [];
         mention_data = [];
+        */
       });
 
    var contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft='+candidate+'&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
@@ -81,20 +82,17 @@ if ($routeParams.query) {
             var ddm = parseInt(dda[1]);
             var ddd = parseInt(dda[2]);
             var dda_int = [ddy,ddm,ddd];
-            contribution_data[candidate.toLowerCase()] = cd.push([Date.UTC(ddy,ddm,ddd),dedupe[key]]);
+            cd.push([Date.UTC(ddy,ddm,ddd),dedupe[key]]);
 
           });
-            charts['candidate'] = candidate;
-            charts['contribution_data'] = contribution_data[candidate.toLowerCase()].cd;
-           //console.log(cd);
-        if (!created) {
+          charts[candidate]['cd'] = cd
+          charts['candidate'] = candidate;
           console.log('creating charts');
-          //createChart(charts.candidate, charts.contribution_data, charts.mention_data);
-          createChart(charts.candidate, cd, md);
-          created = true;
-        }
+          console.log(candidate);
+          createChart(charts.candidate, charts[candidate].cd, charts[candidate].md);
+          md = [];
+          cd = [];
 				/*
-				//createChart(candidate, contribution_data, mention_data);
 				contribution_data = [];
 				data_date = [];
 				dedupe = {};
@@ -102,6 +100,7 @@ if ($routeParams.query) {
 				mention_data = [];
 				*/
       });
+   window.chartss = charts;
 
 };
 
