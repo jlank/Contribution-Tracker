@@ -1,6 +1,11 @@
 'use strict';
 
-/* Controllers */
+  /* Controllers */
+function searchbutton(){
+  query_value = document.getElementById('appendedInputButtons').value
+  alert(query_value)
+  window.location = ('/app/#/search/'+query_value)
+}
 
 function MyCtrl1($scope, $http, $route, $routeParams, $location) {
 var data_date = [];
@@ -13,7 +18,7 @@ var charts = {};
 var created = false;
 var md = [];
 var cd = [];
-//var ran = { romney: false, obama: false };
+    //var ran = { romney: false, obama: false };
 
 if ($routeParams.query) {
 	var run = function (candidate) {
