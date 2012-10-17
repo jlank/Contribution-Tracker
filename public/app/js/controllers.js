@@ -32,9 +32,9 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
         .success(function (data) {
           if (data.err !== 'undefined') {
             data.forEach(function(item){
-              var ddy = parseInt(item.date[0]); //date detail year
-              var ddm = parseInt(item.date[1]);
-              var ddd = parseInt(item.date[2]);
+              var ddy = parseInt(item.date[0], 10); //date detail year
+              var ddm = parseInt(item.date[1], 10);
+              var ddd = parseInt(item.date[2], 10);
               md.push([Date.UTC(ddy,ddm,ddd),10000]);
 
             });
@@ -83,9 +83,9 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
 
             sorted_keys.forEach(function (key) {
               var dda = key.split('-');
-              var ddy = parseInt(dda[0]); //date detail year
-              var ddm = parseInt(dda[1]);
-              var ddd = parseInt(dda[2]);
+              var ddy = parseInt(dda[0], 10); //date detail year
+              var ddm = parseInt(dda[1], 10);
+              var ddd = parseInt(dda[2], 10);
               var dda_int = [ddy,ddm,ddd];
               cd.push([Date.UTC(ddy,ddm,ddd),dedupe[key]]);
 

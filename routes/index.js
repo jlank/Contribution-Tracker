@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+  res.send('<meta http-equiv="Refresh" content="0;url=/app/">');
 };
