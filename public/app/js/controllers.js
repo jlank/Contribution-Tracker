@@ -89,7 +89,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               }
 
             });
-            console.log(maxamount)
+            //console.log(maxamount)
 
             charts[candidate]['cd'] = cd;
             charts['candidate'] = candidate;
@@ -104,7 +104,6 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   };
 
   run('Romney');
-  //console.log(run('Romney'))
   run('Obama');
   //createChart(charts.Romney , charts[Romney].cd, charts[Romney].md, maxamount);
 
