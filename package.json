@@ -1,6 +1,6 @@
 {
   "name": "wapohack",
-  "version": "0.0.1-22",
+  "version": "0.0.1-24",
   "description": "a weekend election hackathon",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "request": "~2.11.4",
     "elasticsearchclient": "~0.2.2"
   },
-  "subdomain": "jlank.wapohack",
+  "subdomain": "contributiontracker",
   "scripts": {
     "start": "app.js"
   },

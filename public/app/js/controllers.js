@@ -1,6 +1,26 @@
 'use strict';
 
   /* Controllers */
+var walk_the_DOM = function walk(node,func){
+  func(node);
+  node = node.firstChild;
+  while (node){
+    walk(node,func);
+    node = node.nextSibling;
+  }
+};
+
+var getElementByAttribute = function(att, value){
+  var results = [];
+
+  walk_the_DOM(document.body,function(node){
+    var actual = node.nodeType === 1 && node.getAttribute(att);
+    if (typeof actual == 'string' && (actual === value || typeof value !== 'string')) {
+      results.push(node);
+    }
+  });
+  return results;
+}
 
 function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   var data_date = [];
@@ -106,7 +126,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   run('Romney');
   run('Obama');
   //createChart(charts.Romney , charts[Romney].cd, charts[Romney].md, maxamount);
-
+  //console.log('walk the dom = ' + getElementByAttribute());
 }
 
 }
