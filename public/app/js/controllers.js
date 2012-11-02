@@ -12,10 +12,8 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       dedupe = {},
       charts = {},
       r2 = [],
-      mdo = [],
-      mdr = [],
-      cdo = [],
-      cdr = [],
+      md = [],
+      cd = [],
       maxamount = 0;
 
   var host = 'jlank.wapohack.jit.su';
@@ -25,13 +23,6 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       window.location = '#/search/' + $scope.query;
     }
   };
-//get contribution function (takes in url, populates data)
-
-
-
-//get mentions function
-
-//draw charts function
 
 //when someone searches...
   if ($routeParams.query) {
