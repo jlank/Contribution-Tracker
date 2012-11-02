@@ -1,26 +1,7 @@
 'use strict';
 
   /* Controllers */
-var walk_the_DOM = function walk(node,func){
-  func(node);
-  node = node.firstChild;
-  while (node){
-    walk(node,func);
-    node = node.nextSibling;
-  }
-};
 
-var getElementByAttribute = function(att, value){
-  var results = [];
-
-  walk_the_DOM(document.body,function(node){
-    var actual = node.nodeType === 1 && node.getAttribute(att);
-    if (typeof actual == 'string' && (actual === value || typeof value !== 'string')) {
-      results.push(node);
-    }
-  });
-  return results;
-}
 
 function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   var data_date = [];
@@ -34,6 +15,60 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   var md = [];
   var cd = [];
   var maxamount = 0;
+  
+  function getContributions(contribUrl){
+    $http.jsonp(contribUrl).success(function (data) {
+      //on successfull request loop through and put keys into a hash and add up values
+      console.log('inside get contributs success func');
+      data.forEach(function(item){
+
+        var amount = (parseInt(item.amount));
+        var dda = item.date.split('-'); // dda = date_detail_array
+        
+        if (!dedupe[item.date]) {
+          dedupe[item.date] = 0;
+        }
+        dedupe[item.date] += amount;
+      });
+      for (var contribution in dedupe) {
+        sorted_keys.push(contribution);
+      }
+      sorted_keys = sorted_keys.sort();
+      sorted_keys.forEach(function (key) {
+        var dda = key.split('-');
+        var ddy = parseInt(dda[0], 10); //date detail year, note the '10' param in parseInt for cross browser compatability
+        var ddm = parseInt(dda[1], 10);
+        var ddd = parseInt(dda[2], 10);
+        var dda_int = [ddy,ddm,ddd];
+        if (dedupe[key]>0){
+          cd.push([Date.UTC(ddy,ddm,ddd),dedupe[key]]);
+        }
+
+        //find the max amount
+        if (dedupe[key]>maxamount){
+          maxamount = dedupe[key]
+          //console.log("inside get contributs max amount = " + maxamount)
+        }
+      });
+      return contribUrl
+    });
+  }
+  //returns 
+  //get max takes in the search term, finds the maximum contribution to either candidate and plugs it in
+  function getMax(){
+    if($routeParams.query){
+      var host = 'jlank.wapohack.jit.su';
+      var o_contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=obama&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
+      var r_contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=romney&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
+      var o_search = getContributions(o_contribUrl);
+      var r_search = getContributions(r_contribUrl);
+      //get data
+      return o_search, r_search
+    }
+    else{
+      console.log('getmax failed')
+    }
+  };
 
   $scope.searchBtn = function () {
     if($scope.query) {
@@ -71,7 +106,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
         });
 
       //need to get API keys out of here
-     var contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft='+candidate+'&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
+     var contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft='+candidate.toLowerCase()+'&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
 
      //call transparency data for info
      $http.jsonp(contribUrl)
@@ -86,13 +121,10 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               }
               dedupe[item.date] += amount;
             });
-
             for (var contribution in dedupe) {
               sorted_keys.push(contribution);
             }
-
             sorted_keys = sorted_keys.sort();
-
             sorted_keys.forEach(function (key) {
               var dda = key.split('-');
               var ddy = parseInt(dda[0], 10); //date detail year, note the '10' param in parseInt for cross browser compatability
@@ -102,15 +134,8 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               if (dedupe[key]>0){
                 cd.push([Date.UTC(ddy,ddm,ddd),dedupe[key]]);
               }
-
-              //find the max amount
-              if (dedupe[key]>maxamount){
-                maxamount = dedupe[key]
-              }
-
             });
-            //console.log(maxamount)
-
+            console.log("max amount = " + maxamount)
             charts[candidate]['cd'] = cd;
             charts['candidate'] = candidate;
             createChart(charts.candidate, charts[candidate].cd, charts[candidate].md, maxamount);
@@ -122,11 +147,11 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
      window.chartss = charts;
 
   };
-
+  getMax();
+  //console.log("max amount = " + maxamount)
   run('Romney');
   run('Obama');
   //createChart(charts.Romney , charts[Romney].cd, charts[Romney].md, maxamount);
-  //console.log('walk the dom = ' + getElementByAttribute());
 }
 
 }
