@@ -36,7 +36,7 @@ function createChart(div_id, line1_data, line2_data, maxamount) {
                     text: 'Contribution (Blue) / Mention Frequency Index'
                 },
                 min: 0,
-                //max: 500000,
+                //max: maxamount,
             },
             tooltip: {
                 shared: true

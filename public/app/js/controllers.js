@@ -1,9 +1,8 @@
 'use strict';
 
-  /* Controllers */
+/* Controllers */
 
 function MyCtrl1($scope, $http, $route, $routeParams, $location) {
-
   var contribution_data = {},
       mention_data = {},
       sorted_keys = [],
@@ -53,7 +52,6 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
         md = [];
         cd = [];
       });
-
 
       $http.jsonp(contribUrl)
         .success(function (data) {

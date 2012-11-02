@@ -1,10 +1,10 @@
 {
-  "name": "wapohack",
-  "version": "0.0.1-21",
+  "name": "Contribution Tracker",
+  "version": "0.0.1-25",
   "description": "a weekend election hackathon",
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:nathanmaton2/wapohack.git"
+    "url": "https://github.com/NathanMaton/Contribution-Tracker.git"
   },
   "keywords": [
     "washington",
@@ -13,8 +13,8 @@
     "sunlightlabs",
     "elections"
   ],
-  "author": "John Lancaster, Jami Ansell, Nathan Maton, Josh Snider",
-  "license": "BSD",
+  "author": "John Lancaster, Nathan Maton, Jami Ansell, Josh Snider",
+  "license": "MIT",
   "dependencies": {
     "event-stream": "~3.0.7",
     "JSONStream": "~0.4.2",
@@ -24,7 +24,7 @@
     "request": "~2.11.4",
     "elasticsearchclient": "~0.2.2"
   },
-  "subdomain": "jlank.wapohack",
+  "subdomain": "contributiontracker",
   "scripts": {
     "start": "app.js"
   },
