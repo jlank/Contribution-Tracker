@@ -1,6 +1,6 @@
 {
-  "name": "Contribution Tracker",
-  "version": "0.0.1-28",
+  "name": "contributiontracker",
+  "version": "0.0.1",
   "description": "a weekend election hackathon",
   "repository": {
     "type": "git",

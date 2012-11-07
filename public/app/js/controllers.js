@@ -19,7 +19,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       dataloader = 0,
       count = 0;
 
-  var host = 'jlank.wapohack.jit.su';
+  var host = 'jlank.contributiontracker.jit.su';
   $scope.searchBtn = function () {
     if($scope.query) {
       window.location = '#/search/' + $scope.query;
