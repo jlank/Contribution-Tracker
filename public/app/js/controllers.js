@@ -20,18 +20,15 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       count = 0;
 
   var host = 'jlank.wapohack.jit.su';
-      
   $scope.searchBtn = function () {
     if($scope.query) {
       window.location = '#/search/' + $scope.query;
     }
   };
-
-
  
   //when someone searches...
   if ($routeParams.query) {
-    var run = function (candidate) {
+    var getData = function (candidate) {
       charts[candidate] = {};
       $scope.query = $routeParams.query;
       var mentionUrl = 'http://' + host + '/search2?query=' + $routeParams.query + '&candidate=' + candidate.toLowerCase() + '&callback=JSON_CALLBACK';
@@ -54,18 +51,11 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               ddm = parseInt(item.date[1], 10),
               ddd = parseInt(item.date[2], 10);              
               final_i = Date.UTC(ddy,ddm,ddd);
-              var utcsecs = final_i/1000;
               var utcdays = Math.floor(final_i/(1000*60*60*24*30));
-              var utcmins = utcsecs/60;
-              //var debugvar = dedupementions[utcdays];
               if (!dedupementions[utcdays]) {
               dedupementions[utcdays] = mentionsamount;
               } 
               dedupementions[utcdays] += mentionsamount;
-              
-              //console.log(utcdays);
-              //console.log(dedupementions[utcdays]);
-              //md.push([final_i,10000]);
             }); // end of iteration through data
 
             for (var mention in dedupementions) {
@@ -74,14 +64,8 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               sorted_mention_keys.push(mention);
             }
 
-            // sorted_mention_keys.forEach(function (key) {
-            //   md.push([final_i,10000]);
-            // }
-
-
             charts[candidate]['md'] = md;
             charts['candidate'] = candidate;
-            //createChart(charts.candidate, charts[candidate].cd, charts[candidate].md);
           }
         md = [];
         cd = [];
@@ -94,8 +78,6 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               ddm = '',
               ddd = '',
               dda_int = '';
-
-
 
           // loop through and put keys into a hash and add up values
           data.forEach(function(item) {
@@ -135,13 +117,9 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
         window.chartss = charts;
         console.log(charts);
         console.log(charts[candidate]['cd']);
-        
-
-        //console.log(charts.candidate.cd);
-        //createChart(charts.candidate, charts.candidate.cd, charts.candidate.md);
-        //setTimeout(function(){alert("Hello")},3000);
 
     };
+
   async.whilst(
     function () { return count < 1; },
     function (callback) {
@@ -155,11 +133,11 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
         createChart('Romney', charts.Romney.cd, charts.Romney.md, maxamount);
         createChart('Obama', charts.Obama.cd, charts.Obama.md, maxamount);
       }
-      else{alert('data error.  Try reloading page')}
+      else{alert('data error.  Try reloading page or send an email to nathanmaton@gmail.com')}
     }
   );
-  run('Romney');
-  run('Obama');
+  getData('Romney');
+  getData('Obama');
   }
 }
 MyCtrl1.$inject = ['$scope', '$http', '$route', '$routeParams', '$location'];
