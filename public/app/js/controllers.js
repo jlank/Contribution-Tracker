@@ -19,8 +19,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       dataloader = 0,
       count = 0;
 
-  //var host = 'jlank.wapohack.jit.su';
-  var host = 'localhost:3000';
+  var host = 'jlank.wapohack.jit.su';
   $scope.searchBtn = function () {
     if($scope.query) {
       window.location = '#/search/' + $scope.query;
@@ -59,8 +58,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
             }); // end of iteration through data
 
             for (var mention in dedupementions) {
-              //console.log(dedupementions[mention]);
-              md.push([(mention*1000*60*60*24*30), (dedupementions[mention]*3000)]);
+              md.push([(mention*1000*60*60*24*30), (dedupementions[mention])]);
               sorted_mention_keys.push(mention);
             }
 
@@ -115,9 +113,6 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
           cd = [];
         });
         window.chartss = charts;
-        //console.log(charts);
-        //console.log(charts[candidate]['cd']);
-
     };
 
   async.whilst(
@@ -129,7 +124,6 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
     },
     function (err) {
       if (charts.Obama.cd !== undefined){
-        //console.log(maxamount);
         createChart('Romney', charts.Romney.cd, charts.Romney.md, maxamount);
         createChart('Obama', charts.Obama.cd, charts.Obama.md, maxamount);
       }
