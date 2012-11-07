@@ -31,13 +31,32 @@ function createChart(div_id, line1_data, line2_data, maxamount) {
                     text: 'Date'
                 }
             },
-            yAxis: {
+            yAxis: [{
                 title: {
                     text: 'Contribution (Blue) / Mention Frequency Index'
                 },
                 min: 0,
                 max: maxamount+(maxamount/5),
             },
+            { // Secondary yAxis
+                title: {
+                    text: 'Mentions',
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                // labels: {
+                //     formatter: function() {
+                //         return this.value +' mm';
+                //     },
+                //     style: {
+                //         color: '#4572A7'
+                //     }
+                // }
+                opposite: true,
+                min: 0,
+    
+            }],
             tooltip: {
                 shared: true
             },
@@ -74,24 +93,21 @@ function createChart(div_id, line1_data, line2_data, maxamount) {
                 name: 'Contribution Amount',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
-
                 pointStart: Date.UTC(2010, 03, 01),
                 data: line1_data
-                //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),50000]]
+                //yAxis: 1
 
             },
            {
                 //type: 'area',
                 name: 'Mention Frequency Index',
-                //pointInterval: 24 * 3600 * 1000, // by day
-                //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
                 //type: 'column',
-                type: 'scatter',
-
-
+                //type: 'scatter',
                 pointStart: Date.UTC(2010, 03, 01),
                 //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),60000]]
-                data: line2_data
+                data: line2_data,
+                color: '#AA4643',
+                yAxis: 1
 
             }]
         });
