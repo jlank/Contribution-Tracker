@@ -1,49 +1,35 @@
 'use strict';
 
-  /* Controllers */
+/* Controllers */
 
 function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   var contribution_data = {},
       mention_data = {},
       sorted_keys = [],
+      sorted_mention_keys = [],
       created = false,
       data_date = [],
       dedupe = {},
+      dedupementions = {},
       charts = {},
       r2 = [],
       md = [],
       cd = [],
-      maxd = [],
       maxamount = 0,
-      maxcounter = 0;
+      dataloader = 0,
+      count = 0;
 
-/*
-    //get max takes in the search term, finds the maximum contribution to either candidate and plugs it in
-   function getMax(){
-     if($routeParams.query){
-       var host = 'jlank.wapohack.jit.su';
-       var o_contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=obama&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
-       var r_contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=romney&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
-       var o_search = getContributions(o_contribUrl);
-       var r_search = getContributions(r_contribUrl);
-     }
-     else{
-       console.log('No search results')
-     }
-   };
-*/
-
-   var host = 'jlank.wapohack.jit.su';
-    //var host = 'localhost:3000';
-
+  //var host = 'jlank.wapohack.jit.su';
+  var host = 'localhost:3000';
   $scope.searchBtn = function () {
     if($scope.query) {
       window.location = '#/search/' + $scope.query;
     }
   };
 
+  //when someone searches...
   if ($routeParams.query) {
-    var run = function (candidate) {
+    var getData = function (candidate) {
       charts[candidate] = {};
       $scope.query = $routeParams.query;
       var mentionUrl = 'http://' + host + '/search?query=' + $routeParams.query + '&candidate=' + candidate.toLowerCase() + '&callback=JSON_CALLBACK';
@@ -53,24 +39,37 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
         .success(function (data) {
           var ddy = '',
               ddm = '',
-              ddd = '';
+              ddd = '',
+              final_i;
 
           if (data.err !== 'undefined') {
+            var mentionsamount = 1;
             data.forEach(function(item){
-              ddy = parseInt(item.date[0], 10),
+
+              //break into components
+              ddy = parseInt(item.date[0], 10), // ddy = date detail year
               ddm = parseInt(item.date[1], 10),
               ddd = parseInt(item.date[2], 10);
-              md.push([Date.UTC(ddy,ddm,ddd),10000]);
-            });
+              final_i = Date.UTC(ddy,ddm,ddd);
+              var utcdays = Math.floor(final_i/(1000*60*60*24*30));
+              if (!dedupementions[utcdays]) {
+              dedupementions[utcdays] = mentionsamount;
+              }
+              dedupementions[utcdays] += mentionsamount;
+            }); // end of iteration through data
 
-            charts[candidate]['md'] = md
+            for (var mention in dedupementions) {
+              //console.log(dedupementions[mention]);
+              md.push([(mention*1000*60*60*24*30), (dedupementions[mention]*3000)]);
+              sorted_mention_keys.push(mention);
+            }
+
+            charts[candidate]['md'] = md;
             charts['candidate'] = candidate;
-            createChart(charts.candidate, charts[candidate].cd, charts[candidate].md);
           }
         md = [];
         cd = [];
       });
-
 
       $http.jsonp(contribUrl)
         .success(function (data) {
@@ -83,12 +82,12 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
           // loop through and put keys into a hash and add up values
           data.forEach(function(item) {
             var amount = (parseInt(item.amount)),
-                dda = item.date.split('-'); // dda = date_detail_array
+            dda = item.date.split('-'); // dda = date_detail_array
 
             if (!dedupe[item.date]) {
               dedupe[item.date] = 0;
             }
-            dedupe[item.date] += amount;
+          dedupe[item.date] += amount;
           });
 
           for (var contribution in dedupe) {
@@ -103,21 +102,42 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
             ddm = parseInt(dda[1], 10);
             ddd = parseInt(dda[2], 10);
             dda_int = [ddy,ddm,ddd];
+            //find the max amount
+            if (dedupe[key]>maxamount){
+              maxamount = dedupe[key]
+            }
+
             cd.push([Date.UTC(ddy,ddm,ddd),dedupe[key]]);
 
           });
           charts[candidate]['cd'] = cd;
-          charts['candidate'] = candidate;
-          createChart(charts.candidate, charts[candidate].cd, charts[candidate].md);
           md = [];
           cd = [];
         });
         window.chartss = charts;
+        //console.log(charts);
+        //console.log(charts[candidate]['cd']);
+
     };
 
-  run('Romney');
-  run('Obama');
+  async.whilst(
+    function () { return count < 1; },
+    function (callback) {
+        count++;
+        setTimeout(callback, 1000);
+        //callback();
+    },
+    function (err) {
+      if (charts.Obama.cd !== undefined){
+        //console.log(maxamount);
+        createChart('Romney', charts.Romney.cd, charts.Romney.md, maxamount);
+        createChart('Obama', charts.Obama.cd, charts.Obama.md, maxamount);
+      }
+      else{alert('data error.  Try reloading page or send an email to nathanmaton@gmail.com')}
+    }
+  );
+  getData('Romney');
+  getData('Obama');
   }
 }
-
 MyCtrl1.$inject = ['$scope', '$http', '$route', '$routeParams', '$location'];

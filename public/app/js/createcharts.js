@@ -1,4 +1,4 @@
-function createChart(div_id, line1_data, line2_data) {
+function createChart(div_id, line1_data, line2_data, maxamount) {
   /*
   console.log('CHARTS');
   console.log(div_id);
@@ -11,18 +11,16 @@ function createChart(div_id, line1_data, line2_data) {
 			chart = new Highcharts.Chart({
             chart: {
                 renderTo: div_id,
-                zoomType: 'x',
+                //zoomType: 'x',
                 spacingRight: 20,
                 width: 500,
-                //type: 'spline'
-
-
+                type: 'spline'
             },
             title: {
                 text: div_id
             },
             subtitle: {
-                text: document.ontouchstart === undefined ?
+                //text: document.ontouchstart === undefined ?
                     'Click and drag in the plot area to zoom in' :
                     'Drag your finger over the plot to zoom in'
             },
@@ -38,8 +36,7 @@ function createChart(div_id, line1_data, line2_data) {
                     text: 'Contribution (Blue) / Mention Frequency Index'
                 },
                 min: 0,
-                startOnTick: false,
-                showFirstLabel: false
+                max: maxamount+(maxamount/5),
             },
             tooltip: {
                 shared: true
@@ -47,31 +44,28 @@ function createChart(div_id, line1_data, line2_data) {
             legend: {
                 enabled: false
             },
+      
             plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-                        stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, 'rgba(2,0,0,0)']
-                        ]
+                spline: {
+                    lineWidth: 4,
+                    states: {
+                        hover: {
+                            lineWidth: 5
+                        }
                     },
-                    lineWidth: 1,
                     marker: {
                         enabled: false,
                         states: {
                             hover: {
                                 enabled: true,
-                                radius: 5
+                                symbol: 'circle',
+                                radius: 5,
+                                lineWidth: 1
                             }
                         }
                     },
-                    shadow: false,
-                    states: {
-                        hover: {
-                            lineWidth: 1
-                        }
-                    }
+                    //pointInterval: 3600000, // one hour
+                    //pointStart: Date.UTC(2009, 9, 6, 0, 0, 0)
                 }
             },
 
@@ -91,6 +85,9 @@ function createChart(div_id, line1_data, line2_data) {
                 name: 'Mention Frequency Index',
                 //pointInterval: 24 * 3600 * 1000, // by day
                 //pointInterval: 24 * 3600 * 1000 * 30, // by 30 days
+                //type: 'column',
+                type: 'scatter',
+
 
                 pointStart: Date.UTC(2010, 03, 01),
                 //data: [[Date.UTC(2010,03,01),40000],[Date.UTC(2012,3,1),60000]]
