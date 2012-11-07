@@ -12,10 +12,29 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       charts = {},
       r2 = [],
       md = [],
-      cd = [];
+      cd = [],
+      maxd = [],
+      maxamount = 0,
+      maxcounter = 0;
 
-      var host = 'jlank.wapohack.jit.su';
-      //var host = 'localhost:3000';
+/*
+    //get max takes in the search term, finds the maximum contribution to either candidate and plugs it in
+   function getMax(){
+     if($routeParams.query){
+       var host = 'jlank.wapohack.jit.su';
+       var o_contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=obama&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
+       var r_contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey=f266a32377604e7d91bbbafd76abb4cc&recipient_ft=romney&cycle=2012&contributor_ft=' + $routeParams.query + '&callback=JSON_CALLBACK';
+       var o_search = getContributions(o_contribUrl);
+       var r_search = getContributions(r_contribUrl);
+     }
+     else{
+       console.log('No search results')
+     }
+   };
+*/
+
+   var host = 'jlank.wapohack.jit.su';
+    //var host = 'localhost:3000';
 
   $scope.searchBtn = function () {
     if($scope.query) {
