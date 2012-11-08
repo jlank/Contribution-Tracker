@@ -19,7 +19,8 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
       dataloader = 0,
       count = 0;
 
-  var host = 'jlank.wapohack.jit.su';
+  var ee = new EventEmitter();
+
   $scope.searchBtn = function () {
     if($scope.query) {
       window.location = '#/search/' + $scope.query;
@@ -31,8 +32,8 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
     var getData = function (candidate) {
       charts[candidate] = {};
       $scope.query = $routeParams.query;
-      var mentionUrl = 'http://' + host + '/search?query=' + $routeParams.query + '&candidate=' + candidate.toLowerCase() + '&callback=JSON_CALLBACK';
-      var contribUrl = 'http://' + host + '/transp?query=' + $routeParams.query + '&candidate=' + candidate.toLowerCase() + '&callback=JSON_CALLBACK';
+      var mentionUrl = 'http://' + window.location.host + '/search?query=' + $routeParams.query + '&candidate=' + candidate.toLowerCase() + '&callback=JSON_CALLBACK';
+      var contribUrl = 'http://' + window.location.host + '/transp?query=' + $routeParams.query + '&candidate=' + candidate.toLowerCase() + '&callback=JSON_CALLBACK';
 
       $http.jsonp(mentionUrl)
         .success(function (data) {
@@ -64,6 +65,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
 
             charts[candidate]['md'] = md;
             charts['candidate'] = candidate;
+            ee.emitEvent('chart');
           }
         md = [];
         cd = [];
@@ -109,29 +111,30 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
 
           });
           charts[candidate]['cd'] = cd;
+          ee.emitEvent('chart');
           md = [];
           cd = [];
         });
-        window.chartss = charts;
     };
+    getData('Romney');
+    getData('Obama');
+  }
 
-  async.whilst(
-    function () { return count < 1; },
-    function (callback) {
-        count++;
-        setTimeout(callback, 1000);
-        //callback();
-    },
-    function (err) {
+  ee.addListener('chart', drawCharts);
+
+  function drawCharts() {
+    count++;
+    if (count === 4) {
       if (charts.Obama.cd !== undefined){
         createChart('Romney', charts.Romney.cd, charts.Romney.md, maxamount);
         createChart('Obama', charts.Obama.cd, charts.Obama.md, maxamount);
       }
-      else{alert('data error.  Try reloading page or send an email to nathanmaton@gmail.com')}
+      else {
+        alert('data error.  Try reloading page or send an email to nathanmaton@gmail.com')
+      }
     }
-  );
-  getData('Romney');
-  getData('Obama');
   }
+
 }
+
 MyCtrl1.$inject = ['$scope', '$http', '$route', '$routeParams', '$location'];

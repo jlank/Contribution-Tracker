@@ -15,7 +15,7 @@ exports.transparency = function (req, res) {
       contribUrl = 'http://transparencydata.com/api/1.0/contributions.json?apikey='+ apiKey +
                    '&recipient_ft='+candidate+'&cycle=2012&contributor_ft=' + query;
 
-  request.get({uri: contribUrl, timeout: 2000}, function (err, r, body) {
+  request.get({uri: contribUrl }, function (err, r, body) {
     if (err) {
       console.error(err);
     }
@@ -49,7 +49,7 @@ exports.search = function (req, res) {
                     '/wapohack/docs/_search?size=100&q=calas.organizations:' + query +
                     ' OR calais.persons:' + query + ' AND speaker:' + candidate;
 
-  request.get({uri: searchQuery, timeout: 2000}, function (err, r, body) {
+  request.get({uri: searchQuery }, function (err, r, body) {
     if (err) {
       console.error(err);
     }
