@@ -1,5 +1,14 @@
 /* app css stylesheet */
 
+.loading {
+  background: url('../img/loader.gif');
+  background-repeat: no-repeat;
+}
+#loader {
+  width: 300px;
+  height: 40px;
+}
+
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;

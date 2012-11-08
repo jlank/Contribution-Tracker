@@ -24,6 +24,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   $scope.searchBtn = function () {
     if($scope.query) {
       window.location = '#/search/' + $scope.query;
+      $('#loader').addClass('loading');
     }
   };
 
@@ -42,7 +43,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
               ddd = '',
               final_i;
 
-          if (data.err !== 'undefined') {
+          if (data.err !== 'no results') {
             var mentionsamount = 1;
             data.forEach(function(item){
 
@@ -65,10 +66,13 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
 
             charts[candidate]['md'] = md;
             charts['candidate'] = candidate;
-            ee.emitEvent('chart');
           }
+          ee.emitEvent('chart');
         md = [];
         cd = [];
+      })
+      .error(function () {
+          ee.emitEvent('chart');
       });
 
       $http.jsonp(contribUrl)
@@ -114,7 +118,10 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
           ee.emitEvent('chart');
           md = [];
           cd = [];
-        });
+        })
+      .error(function () {
+          ee.emitEvent('chart');
+      });
     };
     getData('Romney');
     getData('Obama');
@@ -125,6 +132,7 @@ function MyCtrl1($scope, $http, $route, $routeParams, $location) {
   function drawCharts() {
     count++;
     if (count === 4) {
+      $('#loader').removeClass('loading');
       if (charts.Obama.cd !== undefined){
         createChart('Romney', charts.Romney.cd, charts.Romney.md, maxamount);
         createChart('Obama', charts.Obama.cd, charts.Obama.md, maxamount);

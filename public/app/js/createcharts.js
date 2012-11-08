@@ -1,11 +1,4 @@
 function createChart(div_id, line1_data, line2_data, maxamount) {
-  /*
-  console.log('CHARTS');
-  console.log(div_id);
-  console.log(line1_data);
-  console.log(line2_data);
-  console.log('END CHARTS');
-  */
     var chart;
     $(document).ready(function() {
 			chart = new Highcharts.Chart({
@@ -111,6 +104,7 @@ function createChart(div_id, line1_data, line2_data, maxamount) {
 
             }]
         });
+      //$(div_id).next().addClass('well');
     });
 
 }
